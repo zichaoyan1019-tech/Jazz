@@ -8,6 +8,9 @@ const CupheadPage: React.FC = () => {
   const [videoItem, setVideoItem] = useState<StyleMapItem | null>(null);
   const [hoveredNode, setHoveredNode] = useState<StyleMapItem | null>(null);
 
+  // Get the base URL for the map image
+  const BASE_URL = (import.meta as any).env?.BASE_URL ?? '/';
+
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -197,18 +200,16 @@ const CupheadPage: React.FC = () => {
             */}
             <div className="absolute inset-0 w-full h-full bg-[#fdf6e3]">
                  <img 
-                    src="/map.jpg" 
+                    src={`${BASE_URL}map.jpg`} 
                     alt="Inkwell Isle Map" 
                     className="w-full h-full object-cover"
-                    // CSS Filter Magic:
-                    // sepia(0.6) -> Adds the vintage brown tone
-                    // hue-rotate(-15deg) -> Shifts remaining blues slightly towards teal/green
-                    // contrast(0.9) -> Softens the harsh digital colors
-                    // saturate(0.8) -> Reduces vividness to look more like old print
-                    style={{ filter: 'sepia(0.4) hue-rotate(-10deg) contrast(0.95) saturate(0.8)' }}
+                    // Improved CSS Filter to turn blue maps into paper-style maps
+                    // Grayscale 100% + Sepia 80% creates a base brown/paper look
+                    // Opacity blending with the cream background finishes the effect
+                    style={{ filter: 'grayscale(100%) sepia(80%) contrast(110%) opacity(0.8)' }}
                  />
-                 {/* Overlay to further tint the blue water to paper color */}
-                 <div className="absolute inset-0 bg-[#fdf6e3] mix-blend-multiply opacity-30 pointer-events-none"></div>
+                 {/* Overlay to further tint and unify texture */}
+                 <div className="absolute inset-0 bg-[#fdf6e3] mix-blend-multiply opacity-50 pointer-events-none"></div>
             </div>
 
             {/* Interactive Nodes Layer */}
